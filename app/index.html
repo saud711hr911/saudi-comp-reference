@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>المرجع السعودي للأجور</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+<script src="theme.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<section class="auth" id="authView" hidden>
+  <div class="card">
+    <div><h1>المرجع السعودي للأجور</h1><p>الأجور والتعويضات والامتثال الوظيفي</p></div>
+    <form id="loginForm" novalidate>
+      <label class="f" for="email"><span class="lt">البريد الإلكتروني</span><input id="email" type="email" autocomplete="username" dir="ltr" required></label>
+      <label class="f" for="password"><span class="lt">كلمة المرور</span><input id="password" type="password" autocomplete="current-password" dir="ltr" required></label>
+      <div class="err" id="loginErr" role="alert" hidden></div>
+      <div class="okmsg" id="loginOk" role="status" hidden></div>
+      <button class="btn primary" id="loginBtn" type="submit">تسجيل الدخول</button>
+    </form>
+    <button class="linkbtn" id="forgotBtn" type="button">نسيت كلمة المرور</button>
+    <p class="hint">الدخول لمن أضافه مالك النظام فقط. لا يوجد تسجيل ذاتي.</p>
+  </div>
+</section>
+
+<section class="auth" id="resetView" hidden>
+  <div class="card">
+    <div><h1>كلمة مرور جديدة</h1><p>اختر كلمة مرور من 12 حرفًا على الأقل.</p></div>
+    <form id="resetForm" novalidate>
+      <label class="f" for="newPw"><span class="lt">كلمة المرور الجديدة</span><input id="newPw" type="password" autocomplete="new-password" dir="ltr" minlength="12" required></label>
+      <div class="err" id="resetErr" role="alert" hidden></div>
+      <button class="btn primary" type="submit">حفظ كلمة المرور</button>
+    </form>
+  </div>
+</section>
+
+<div id="appView" hidden>
+<header class="top" id="hdr">
+  <div class="hrow">
+    <div class="brand"><h1>المرجع السعودي للأجور</h1><p>الأجور والتعويضات والامتثال الوظيفي</p></div>
+    <div class="cobar">
+      <label for="co">المنشأة</label>
+      <select id="co"></select>
+      <span class="hint" id="calcInfo"></span>
+      <button class="match" id="matchBtn" type="button"></button>
+    </div>
+  </div>
+  <div class="userbar">
+    <div class="who"><span id="whoEmail" class="v"></span><span class="badge b-mute" id="whoRole"></span><span class="save" id="saveState" role="status" aria-live="polite"></span></div>
+    <div class="row"><button class="iconbtn" id="themeBtn" type="button" aria-label="تبديل الوضع الفاتح والداكن"></button><button class="iconbtn" id="logoutBtn" type="button">خروج</button></div>
+  </div>
+  <p class="notice" id="dummyNotice">نسخة تجريبية ببيانات وهمية. لا تُدخل بيانات موظفين حقيقيين.</p>
+  <nav class="tabs" role="tablist" aria-label="أقسام">
+    <button role="tab" id="t-emp" data-tab="emp"><span class="l">الموظف</span><span class="s">الموظف</span></button>
+    <button role="tab" id="t-dash" data-tab="dash"><span class="l">لوحة المنشأة</span><span class="s">اللوحة</span></button>
+    <button role="tab" id="t-set" data-tab="set"><span class="l">إعدادات المنشأة</span><span class="s">الإعدادات</span></button>
+    <button role="tab" id="t-rules" data-tab="rules"><span class="l">الأحكام والمصادر</span><span class="s">الأحكام</span></button>
+  </nav>
+</header>
+
+<main>
+<p class="loading" id="loading">جارٍ التحميل…</p>
+<div class="panel" id="noCompany" hidden><h2>لا توجد منشأة مرتبطة بحسابك</h2><p class="hint">اطلب من مالك النظام إضافتك إلى منشأتك.</p></div>
+<section id="p-emp" hidden>
+  <div class="mstep" role="group" aria-label="خطوات">
+    <button data-step="list">١ الموظفون</button><button data-step="form">٢ البيانات</button><button data-step="result">٣ النتيجة</button>
+  </div>
+  <div class="emp" id="empGrid">
+    <aside class="panel listp">
+      <div class="row between" style="margin-bottom:10px"><h2>الموظفون</h2><button class="btn primary" id="addEmp" type="button">+ موظف</button></div>
+      <input class="search" id="empSearch" type="search" placeholder="بحث بالاسم أو الفئة" aria-label="بحث في الموظفين">
+      <div class="emplist" id="empList"></div>
+    </aside>
+    <div class="panel formp" id="formPanel"></div>
+    <div class="panel result" id="resultPanel"></div>
+  </div>
+</section>
+<section id="p-dash" hidden></section>
+<section id="p-set" hidden></section>
+<section id="p-rules" hidden></section>
+<section id="p-check" hidden></section>
+</main>
+</div>
+
+</div>
+<script src="vendor/supabase-2.117.2.js"></script>
+<script src="config.js"></script>
+<script src="engine.js"></script>
+<script src="data.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

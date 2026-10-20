@@ -1,0 +1,31 @@
+name: tests
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Engine vs Excel
+        run: node match.cjs
+      - name: Database isolation (local PostgreSQL)
+        run: |
+          sudo apt-get install -y -q postgresql-16 >/dev/null
+          sudo bash قاعدة-البيانات/run-tests.sh
+      - name: Security through real sign-in (local Supabase Auth + PostgREST)
+        run: |
+          sudo -E bash tools/local-stack.sh start
+          sudo cat /tmp/saudi-comp-stack/env > stack.env
+          set -a; . ./stack.env; set +a
+          node tools/live-tests.cjs
+      - name: Browser
+        run: |
+          set -a; . ./stack.env; set +a
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium
+          node tools/build.cjs --url http://app.test:54321 --anon "$SB_ANON_KEY"
+          node tools/e2e.cjs http://app.test:54321/
