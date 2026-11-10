@@ -69,7 +69,7 @@ function rec(ok, label, detail) { ok ? pass++ : fail++; lines.push((ok ? "PASS" 
     rec((await page.textContent("#resultPanel .summary .big")).trim() === expected, "إعادة القيمة الأصلية تعيد قيمة Excel", expected);
 
     // add and delete an employee
-    await page.click("#addEmp"); await page.waitForSelector("#f_name");
+    await page.click("#addEmp"); await page.waitForSelector('#formPanel h2:has-text("موظف جديد")');
     await page.fill("#f_name", "موظف اختبار " + run);
     await page.waitForFunction(() => document.getElementById("saveState").textContent === "محفوظ", null, { timeout: 10000 });
     await page.reload({ waitUntil: "networkidle" }); await page.waitForSelector("#empList button");

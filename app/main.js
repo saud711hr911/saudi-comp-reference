@@ -158,9 +158,10 @@
     while (c.employees.some(function (d) { return d.code === code; })) code = "E" + String(++k).padStart(2, "0");
     var d = { code: code, name: "موظف جديد", cat: "سعودي", nat: "السعودية", title: "", occ: "", grade: "", contract: "دوام كامل", relied: "نعم", docqiwa: "غير معروف", hire: "", scheme: "جديد",
       basic: null, hcash: null, hkind: "لا", tcash: null, tkind: "", other: null, comm: null, commx: null, commprev: null, bonus: null, gosiw: null };
-    $("addEmp").disabled = true;
+    // Clear the form while the new row is created, so typing cannot land on the previously selected employee.
+    $("addEmp").disabled = true; $("formPanel").innerHTML = '<p class="empty">جارٍ إضافة موظف جديد…</p>';
     try { var saved = await DATA.createEmployee(c, d); saved.hire = saved.hire || ""; c.employees.push(saved); lastErr = ""; }
-    catch (e) { lastErr = msg(e); saveBadge(); $("addEmp").disabled = false; return; }
+    catch (e) { lastErr = msg(e); saveBadge(); $("addEmp").disabled = false; renderAll(); return; }
     $("addEmp").disabled = false;
     state.empIdx = c.employees.length - 1; state.step = "form"; ui.q = ""; $("empSearch").value = "";
     renderAll();
