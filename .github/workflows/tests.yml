@@ -25,6 +25,7 @@ jobs:
       - name: Browser
         run: |
           set -a; . ./stack.env; set +a
+          sudo chown -R "$(id -u):$(id -g)" "$HOME/.cache" 2>/dev/null || true
           npm install --no-save playwright@1.56.1
           npx playwright install --with-deps chromium
           node tools/build.cjs --url http://app.test:54321 --anon "$SB_ANON_KEY"
